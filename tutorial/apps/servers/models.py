@@ -18,8 +18,8 @@ class Server(models.Model):
     idc = models.ForeignKey(Idc,null = True,verbose_name="所在机房",help_text="所在机房")
     cabinet = models.ForeignKey(Cabinet,null = True,verbose_name="所在机柜",help_text="所在机柜")
     cabinet_position = models.CharField("机柜内位置",null =True,max_length=20,help_text="机柜内位置")
-    uuid = models.CharField("UUID",db_index= True,unique=True,max_length=32,help_text="UUID")
-    last_check = models.DateField("检测时间",db_index= True,auto_now=True,help_text="检测时间")
+    uuid = models.CharField("UUID",db_index= True,unique=True,max_length=50,help_text="UUID")
+    last_check = models.DateTimeField("检测时间",db_index= True,auto_now=True,help_text="检测时间")
 
 
     def __str__(self):
