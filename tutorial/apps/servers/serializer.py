@@ -77,9 +77,6 @@ class ServerAutoReportSerializer(serializers.Serializer):
         for network_device_obj in set(network_device_queryset) - set(current_network_device_queryset):
             network_device_obj.delete()
 
-
-
-
     def check_ip(self,network_device_obj,ifnets):
         ip_queryset = network_device_obj.ip_set.all()
         current_ip_queryset = []

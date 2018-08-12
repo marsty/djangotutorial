@@ -37,17 +37,22 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
+    'rest_framework.authtoken',
     'rest_framework',
+    'django_filters',
     'idcs.apps.IdcsConfig',
     'users.apps.UsersConfig',
     'cabinet.apps.CabinetConfig',
     'manufacturer.apps.ManufacturerConfig',
     'servers.apps.ServersConfig',
+    'groups.apps.GroupsConfig',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -55,6 +60,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = (
+    '*',
+)
 ROOT_URLCONF = 'tutorial.urls'
 
 TEMPLATES = [
@@ -125,7 +135,24 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+import django_filters
 REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
     'DEFAULT_PAGINATION_CLASS': 'users.pagination.Pagination',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication'
+    ),
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+    'DEFAULT_PERMISSION_CLASSES': (
+     #   'rest_framework.permissions.DjangoModelPermissions',
+    'rest_framework.permissions.AllowAny',
+        # 'tutorial.permission.Permission',
+    ),
+}
+import datetime
+JWT_AUTH = {
+'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=30000),
 }

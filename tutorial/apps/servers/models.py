@@ -27,6 +27,10 @@ class Server(models.Model):
     class Meta:
         db_table = "resources_server"
         ordering = ["id"]
+        permissions = (
+            ("view_server","can view server"),
+            ("change_server_status","can change the status of server"),
+        )
 
 
 class NetworkDevice(models.Model):

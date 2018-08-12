@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.conf.urls import url,include
 from rest_framework.routers import  DefaultRouter
 from idcs.views import IdcViewset
-from users.views import  UserViewset
+from users.views import  UserViewset,DashboardStatus,UserInfoViewset
 from cabinet.views import CabinetViewset
 from rest_framework.documentation import  include_docs_urls
 from manufacturer.views import ManufacturerViewset,ProductModelViewset
@@ -32,8 +32,21 @@ route.register("ServerAutoReport",ServerAutoReportViewset,base_name="ServerAutoR
 route.register("NetworkDevice",NetworkDeviceViewset,base_name="NetworkDevice")
 route.register("IP",IPViewset,base_name="IP")
 route.register("Server",ServerViewset,base_name="Server")
+route.register("DashboardStatus",DashboardStatus,base_name="DashboardStatus")
+route.register("userinfo",UserInfoViewset,base_name="UserInfo")
+from rest_framework_jwt.views import obtain_jwt_token
+
+from groups.route import group_router
+route.registry.extend(group_router.registry)
 
 urlpatterns = [
     url(r'^', include(route.urls)),
-    url(r'docs/',include_docs_urls("practice"))
+    url(r'docs/',include_docs_urls("practice")),
+    url(r'^api-auth/',include('rest_framework.urls')),
+    url(r'^api-token-auth/', obtain_jwt_token)
 ]
+
+# from rest_framework.authtoken import views
+# urlpatterns += [
+#     url(r'^api-token-auth/', views.obtain_auth_token)
+# ]

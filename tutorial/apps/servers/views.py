@@ -4,6 +4,8 @@ from django.shortcuts import render
 from rest_framework import viewsets,mixins
 from .models import *
 from .serializer import *
+from django_filters.rest_framework import DjangoFilterBackend
+from .filters import  ServertFilter
 
 class ServerAutoReportViewset(viewsets.GenericViewSet,mixins.CreateModelMixin,mixins.UpdateModelMixin):
     """
@@ -25,7 +27,11 @@ class ServerViewset(viewsets.ReadOnlyModelViewSet):
     """
     queryset = Server.objects.all()
     serializer_class = ServerSerializer
-
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = ("hostname",)
+    filter_class = ServertFilter
+    extra_perms_map = {
+        'GET': ['servers.view_server'],}
 
 
 class NetworkDeviceViewset(viewsets.ReadOnlyModelViewSet):
